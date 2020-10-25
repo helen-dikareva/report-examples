@@ -1,5 +1,5 @@
 import { Role } from 'testcafe';
-import { loginPage, manageAccountPage, myDownloadsPage } from './utils/page_model';
+import { pageHeader, loginPage, manageAccountPage, myDownloadsPage } from './utils/page_model';
 import credentials from './utils/credentials';
 
 fixture `Login functionality`
@@ -17,13 +17,21 @@ const userRole = Role('https://www.devexpress.com/MyAccount/LogIn/', async t => 
 test('Logged user can buy a product', async t => {
     await t.useRole(userRole);
 
-    //...
-    await t.click(myDownloadsPage.newLicenseLink);
+    await t
+        .click(pageHeader.myAccountIcon)
+        .click(pageHeader.downloadsItem)
+
+        .expect(myDownloadsPage.licenseList.visible).ok()
+        .click(myDownloadsPage.newLicenseLink);
 });
 
 test('Logged user can manage their account', async t => {
     await t.useRole(userRole);
 
-    //...
-    await t.click(manageAccountPage.personalInfoUpdateLink);
+    await t
+        .click(pageHeader.myAccountIcon)
+        .click(pageHeader.manageProfileItem)
+
+        .expect(manageAccountPage.accountInfo.visible).ok()
+        .click(manageAccountPage.personalInfoUpdateLink);
 });

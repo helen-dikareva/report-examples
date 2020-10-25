@@ -1,3 +1,5 @@
+import { Selector } from 'testcafe';
+
 fixture('Server debugging')
     .page('http://devexpress.github.io/testcafe/example/');
 
