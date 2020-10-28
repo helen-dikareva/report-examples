@@ -1,22 +1,15 @@
 import { Selector } from 'testcafe';
 
-fixture `Wrong using of assertions recalculation`
-    .page `https://js.devexpress.com/Demos/WidgetsGallery/Demo/ProgressBar/Overview/jQuery/Light/`;
+const element = Selector('input');
 
-test('Don\'t use await inside assertions', async t => {
+test('Do not use await inside assertions', async t => {
     await t
-        .switchToIframe('#demoFrame')
-        .click(Selector('span').withText('Start progress'))
-
-        .expect(await Selector('.dx-progressbar-status').textContent).eql("Loading: 100%", { timeout: 15000 });
+        .typeText(element, 'temp')
+        .expect(await element.value).eql('temp');
 });
 
 test('Awaited values cannot be used for assertion recalculation', async t => {
-    await t
-        .switchToIframe('#demoFrame')
-        .click(Selector('span').withText('Start progress'));
+    const value = await element.value;
 
-    const statusText = await Selector('.dx-progressbar-status').textContent;
-
-    await t.expect(statusText).eql("Loading: 100%", { timeout: 15000 });
+    await t.expect(value).eql('temp');
 });
